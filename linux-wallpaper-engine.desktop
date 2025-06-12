@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Linux Wallpaper Engine
+Comment=A powerful wallpaper engine for Linux with Steam Workshop support
+GenericName=Wallpaper Engine
+Exec=python3 %f/run.py
+Icon=%f/wallpaper-engine.png
+Path=%f
+Terminal=false
+StartupNotify=true
+Categories=Graphics;Utility;
+Keywords=wallpaper;background;steam;workshop;animated;
+StartupWMClass=linux-wallpaper-engine
+MimeType=application/x-wallpaper-engine;

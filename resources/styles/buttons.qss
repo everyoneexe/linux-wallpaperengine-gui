@@ -1,0 +1,138 @@
+/* 
+Wallpaper Engine - Button Styles
+*/
+
+/* Genel Button Stilleri */
+QPushButton {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #00d4ff, stop:1 #0099cc);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    padding: 12px 20px;
+    font-size: 13px;
+}
+
+QPushButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #00ffff, stop:1 #00aadd);
+}
+
+QPushButton:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #0099cc, stop:1 #006699);
+}
+
+/* Wallpaper Button Stilleri */
+.WallpaperButton {
+    border: 3px solid #444;
+    border-radius: 15px;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #2b2b2b, stop:1 #1b1b1b);
+    margin: 3px;
+}
+
+.WallpaperButton:hover {
+    border: 3px solid #00d4ff;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #3b3b3b, stop:1 #2b2b2b);
+}
+
+.WallpaperButton:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #1b1b1b, stop:1 #0b0b0b);
+    border: 3px solid #0099cc;
+}
+
+/* Playlist Control Buttons */
+.PlaylistButton {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #00d4ff, stop:1 #0099cc);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    margin: 3px;
+    font-size: 13px;
+}
+
+.PlaylistButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #00ffff, stop:1 #00aadd);
+}
+
+.PlaylistButton:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #0099cc, stop:1 #006699);
+}
+
+/* Control Buttons (Play, Next, Prev) */
+.ControlButton {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #00d4ff, stop:1 #0099cc);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    margin: 3px;
+    font-size: 16px;
+}
+
+.ControlButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #00ffff, stop:1 #00aadd);
+}
+
+.ControlButton:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #0099cc, stop:1 #006699);
+}
+
+/* Settings Button */
+.SettingsButton {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #ff6b6b, stop:1 #ff8e8e);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    padding: 12px;
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.SettingsButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #ff5252, stop:1 #ff7979);
+}
+
+.SettingsButton:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #cc4444, stop:1 #cc6666);
+}
+
+/* Management Buttons */
+.ManagementButton {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #00d4ff, stop:1 #0099cc);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    margin: 3px;
+    font-size: 12px;
+}
+
+.ManagementButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #00ffff, stop:1 #00aadd);
+}
+
+.ManagementButton:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #0099cc, stop:1 #006699);
+}

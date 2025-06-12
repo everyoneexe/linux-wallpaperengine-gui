@@ -1,0 +1,186 @@
+/* 
+Wallpaper Engine - Modern Dark Theme
+*/
+
+/* Ana Widget Stilleri */
+QWidget {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #0f0f23, stop:1 #1a1a2e);
+    color: white;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    font-size: 13px;
+}
+
+QLabel {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* ComboBox Stilleri */
+QComboBox {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #404040, stop:1 #2a2a2a);
+    border: 2px solid #555;
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: white;
+    font-weight: 500;
+    min-height: 20px;
+}
+
+QComboBox:hover {
+    border: 2px solid #00d4ff;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #4a4a4a, stop:1 #3a3a3a);
+}
+
+QComboBox::drop-down {
+    border: none;
+    background: transparent;
+    width: 20px;
+}
+
+QComboBox::down-arrow {
+    image: none;
+    border: 3px solid transparent;
+    border-top: 6px solid #00d4ff;
+    width: 0px;
+    height: 0px;
+}
+
+/* Slider Stilleri */
+QSlider::groove:horizontal {
+    border: 1px solid #555;
+    height: 8px;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #2a2a2a, stop:1 #1a1a1a);
+    border-radius: 4px;
+}
+
+QSlider::handle:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #00d4ff, stop:1 #0099cc);
+    border: 2px solid #005577;
+    width: 18px;
+    margin: -5px 0;
+    border-radius: 9px;
+}
+
+QSlider::handle:horizontal:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #00ffff, stop:1 #00aadd);
+}
+
+/* CheckBox Stilleri */
+QCheckBox {
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+    spacing: 8px;
+}
+
+QCheckBox::indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 2px solid #555;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #2a2a2a, stop:1 #1a1a1a);
+}
+
+QCheckBox::indicator:hover {
+    border: 2px solid #00d4ff;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #3a3a3a, stop:1 #2a2a2a);
+}
+
+QCheckBox::indicator:checked {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #00d4ff, stop:1 #0099cc);
+    border: 2px solid #005577;
+}
+
+QCheckBox::indicator:checked:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #00ffff, stop:1 #00aadd);
+}
+
+/* RadioButton Stilleri */
+QRadioButton {
+    color: white;
+    font-weight: 500;
+    spacing: 8px;
+}
+
+QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    border: 2px solid #555;
+    background: #2a2a2a;
+}
+
+QRadioButton::indicator:hover {
+    border: 2px solid #00d4ff;
+}
+
+QRadioButton::indicator:checked {
+    background: qradial-gradient(cx:0.5, cy:0.5, radius:0.5,
+        stop:0 #00d4ff, stop:0.6 #00d4ff, stop:0.7 transparent);
+    border: 2px solid #00d4ff;
+}
+
+/* GroupBox Stilleri */
+QGroupBox {
+    font-weight: bold;
+    font-size: 14px;
+    color: #00d4ff;
+    border: 2px solid #555;
+    border-radius: 10px;
+    margin-top: 10px;
+    padding-top: 15px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 15px;
+    padding: 0 8px 0 8px;
+}
+
+/* ScrollArea Stilleri */
+QScrollArea {
+    border: 2px solid #444;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+QScrollBar:vertical {
+    background: #2a2a2a;
+    width: 12px;
+    border-radius: 6px;
+}
+
+QScrollBar::handle:vertical {
+    background: #00d4ff;
+    border-radius: 6px;
+    min-height: 20px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #00ffff;
+}
+
+/* KeySequenceEdit Stilleri */
+QKeySequenceEdit {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #404040, stop:1 #2a2a2a);
+    border: 2px solid #555;
+    border-radius: 8px;
+    padding: 8px;
+    color: white;
+    font-weight: 500;
+}
+
+QKeySequenceEdit:focus {
+    border: 2px solid #00d4ff;
+}
