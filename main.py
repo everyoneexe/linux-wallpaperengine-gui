@@ -1,5 +1,11 @@
 """
 Wallpaper Engine - Main application organized with Template Architecture
+
+Main Application Flow:
+1. App.main() - Entry point
+2. Flow.* - Core algorithms
+3. Utils.* - Helper functions
+4. State.* - Shared data
 """
 import sys
 import logging

@@ -23,9 +23,9 @@ class WallpaperEngine:
     Wallpaper Engine işlemlerini yöneten sınıf.
     
     Attributes:
-        current_wallpaper: Şu an aktif olan wallpaper ID'si
-        current_process: Çalışan wallpaper süreci
-        last_settings: Son kullanılan ayarlar
+        current_wallpaper: Currently active wallpaper ID
+        current_process: Running wallpaper process
+        last_settings: Last used settings
     """
     
     def __init__(self):
@@ -69,7 +69,7 @@ class WallpaperEngine:
             return False
             
         if not WALLPAPER_ENGINE_BINARY.exists():
-            logger.error(f"Wallpaper Engine binary bulunamadı: {WALLPAPER_ENGINE_BINARY}")
+            logger.error(f"Wallpaper Engine binary not found: {WALLPAPER_ENGINE_BINARY}")
             return False
 
         try:
@@ -93,10 +93,22 @@ class WallpaperEngine:
             if disable_mouse:
                 cmd.append("--disable-mouse")
                 
-            logger.info(f"Wallpaper uygulanıyor: {wallpaper_id}")
+            logger.info(f"Wallpaper uygulanıyor: {wallpaper_id} -> Hedef ekran: {screen}")
             logger.debug(f"Komut: {' '.join(cmd)}")
             
-            # Süreci tamamen bağımsız olarak başlat (detached process)
+            # Debug: Mevcut monitörleri de logla
+            try:
+                import subprocess
+                xrandr_result = subprocess.run(["xrandr", "--listactivemonitors"],
+                                             capture_output=True, text=True, timeout=5)
+                if xrandr_result.returncode == 0:
+                    logger.debug(f"Active monitors:\n{xrandr_result.stdout}")
+                else:
+                    logger.warning("xrandr --listactivemonitors başarısız")
+            except Exception as e:
+                logger.warning(f"Monitör listesi alınamadı: {e}")
+            
+            # Start process completely independent (detached process)
             self.current_process = subprocess.Popen(
                 cmd,
                 stdout=subprocess.DEVNULL,
@@ -105,10 +117,10 @@ class WallpaperEngine:
                 preexec_fn=None if hasattr(subprocess, 'CREATE_NEW_PROCESS_GROUP') else lambda: None
             )
             
-            # Process referansını hemen temizle - wallpaper bağımsız çalışsın
+            # Clear process reference immediately - let wallpaper run independently
             process_pid = self.current_process.pid
             self.current_process = None
-            logger.info(f"Wallpaper bağımsız süreç olarak başlatıldı (PID: {process_pid})")
+            logger.info(f"Wallpaper started as independent process (PID: {process_pid})")
             
             # Ayarları kaydet
             self.current_wallpaper = wallpaper_id
@@ -128,10 +140,10 @@ class WallpaperEngine:
             return True
             
         except FileNotFoundError:
-            logger.error("Wallpaper Engine binary bulunamadı")
+            logger.error("Wallpaper Engine binary not found")
             return False
         except PermissionError:
-            logger.error("Wallpaper Engine çalıştırma izni yok")
+            logger.error("No permission to run Wallpaper Engine")
             return False
         except Exception as e:
             logger.error(f"Wallpaper uygularken hata: {e}")
@@ -139,26 +151,26 @@ class WallpaperEngine:
 
     def stop_current_wallpaper(self) -> bool:
         """
-        Wallpaper referansını temizler ama süreci sonlandırmaz.
+        Clears wallpaper reference but doesn't terminate process.
         
         Returns:
-            bool: Her zaman True (sadece referans temizleme)
+            bool: Always True (only reference clearing)
         """
-        # Artık process referansımız yok, sadece current_wallpaper'ı temizle
+        # We no longer have process reference, just clear current_wallpaper
         if self.current_wallpaper:
-            logger.info(f"Wallpaper referansı temizlendi: {self.current_wallpaper}")
+            logger.info(f"Wallpaper reference cleared: {self.current_wallpaper}")
             self.current_wallpaper = None
         
         return True
 
     def is_running(self) -> bool:
         """
-        Wallpaper'ın çalışıp çalışmadığını kontrol eder.
+        Checks if wallpaper is running.
         
         Returns:
             bool: Wallpaper ID'si varsa True (bağımsız süreç olduğu için)
         """
-        # Artık process referansımız yok, wallpaper ID'si varsa çalışıyor kabul et
+        # We no longer have process reference, assume running if wallpaper ID exists
         return self.current_wallpaper is not None
 
     def get_current_wallpaper_info(self) -> Optional[Dict[str, Any]]:
@@ -182,16 +194,16 @@ class WallpaperEngine:
 
     def restart_with_new_settings(self, **kwargs) -> bool:
         """
-        Mevcut wallpaper'ı yeni ayarlarla yeniden başlatır.
+        Restarts current wallpaper with new settings.
         
         Args:
             **kwargs: Yeni ayarlar
             
         Returns:
-            bool: Yeniden başlatma başarılı ise True
+            bool: True if restart successful
         """
         if not self.current_wallpaper:
-            logger.warning("Yeniden başlatılacak wallpaper yok")
+            logger.warning("No wallpaper to restart")
             return False
             
         # Mevcut ayarları güncelle
@@ -251,8 +263,8 @@ class WallpaperEngine:
     def _load_state(self) -> None:
         """App restart sonrası state'i restore eder."""
         try:
-            print(f"[DEBUG] WallpaperEngine._load_state() çağrıldı")
-            print(f"[DEBUG] Settings dosyası: {SETTINGS_FILE}")
+            print(f"[DEBUG] WallpaperEngine._load_state() called")
+            print(f"[DEBUG] Settings file: {SETTINGS_FILE}")
             print(f"[DEBUG] Dosya var mı? {SETTINGS_FILE.exists()}")
             
             if SETTINGS_FILE.exists():
@@ -277,7 +289,7 @@ class WallpaperEngine:
                 else:
                     print(f"[DEBUG] ❌ Current wallpaper restore edilemedi")
             else:
-                print(f"[DEBUG] ❌ Settings dosyası bulunamadı")
+                print(f"[DEBUG] ❌ Settings file not found")
                     
         except Exception as e:
             logger.error(f"State restore hatası: {e}")
@@ -311,9 +323,9 @@ class WallpaperEngine:
             logger.error(f"State kaydetme hatası: {e}")
 
     def _detect_running_wallpaper(self) -> None:
-        """Çalışan wallpaper'ı live olarak detect eder."""
+        """Detects running wallpaper in real-time."""
         try:
-            print(f"[DEBUG] _detect_running_wallpaper() başladı")
+            print(f"[DEBUG] _detect_running_wallpaper() started")
             
             import psutil
             detected_wallpaper = None
@@ -336,7 +348,7 @@ class WallpaperEngine:
                                 bg_index = cmdline.index('--bg')
                                 if bg_index + 1 < len(cmdline):
                                     detected_wallpaper = cmdline[bg_index + 1]
-                                    print(f"[DEBUG] ✅ Çalışan wallpaper detect edildi: {detected_wallpaper}")
+                                    print(f"[DEBUG] ✅ Running wallpaper detected: {detected_wallpaper}")
                                     break
                             except (ValueError, IndexError):
                                 continue
@@ -354,9 +366,9 @@ class WallpaperEngine:
                     self._save_state()
                     logger.info(f"Live wallpaper detection: {detected_id}")
                 else:
-                    print(f"[DEBUG] ❌ Folder ID çıkarılamadı: {detected_wallpaper}")
+                    print(f"[DEBUG] ❌ Could not extract folder ID: {detected_wallpaper}")
             else:
-                print(f"[DEBUG] ❌ Çalışan wallpaper bulunamadı")
+                print(f"[DEBUG] ❌ No running wallpaper found")
                 
         except Exception as e:
             logger.error(f"Wallpaper detection hatası: {e}")
@@ -394,7 +406,7 @@ class WallpaperEngine:
             return None
 
     def __del__(self):
-        """Destructor - hiçbir şey yapma, wallpaper bağımsız çalışsın"""
+        """Destructor - do nothing, let wallpaper run independently"""
         try:
             # Hiçbir şey yapma - wallpaper tamamen bağımsız
             pass

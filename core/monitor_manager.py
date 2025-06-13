@@ -404,18 +404,61 @@ class MonitorManager(QObject):
                 logger.warning("No WallpaperEngine reference, wallpaper cannot be applied")
                 return False
             
-            # Currently single monitor support - will be extended for multi-monitor in future
-            success = self.wallpaper_engine.apply_wallpaper(
-                wallpaper_id=wallpaper_id,
-                screen=monitor_name,
-                volume=50,  # default
-                fps=60,     # default
-                noautomute=False,
-                no_audio_processing=False,
-                disable_mouse=False
-            )
+            # Multi-monitor support: Use monitor-specific application
+            logger.info(f"Applying wallpaper to monitor: {monitor_name} -> {wallpaper_id}")
             
-            return success
+            # Check if this is a custom media wallpaper
+            if wallpaper_id.startswith('custom_') or wallpaper_id.startswith('gif_'):
+                # For custom media, use WallpaperController's media wallpaper method
+                from core.wallpaper_controller import WallpaperController
+                controller = WallpaperController(self.wallpaper_engine)
+                
+                # Get media file path
+                from pathlib import Path
+                steam_workshop_path = Path.home() / ".steam" / "steam" / "steamapps" / "workshop" / "content" / "431960"
+                if not steam_workshop_path.exists():
+                    steam_workshop_path = Path.home() / ".local" / "share" / "Steam" / "steamapps" / "workshop" / "content" / "431960"
+                
+                wallpaper_path = steam_workshop_path / wallpaper_id
+                if wallpaper_path.exists():
+                    # Find media file
+                    media_files = []
+                    for ext in ['.gif', '.mp4', '.webm', '.mov', '.avi', '.mkv']:
+                        media_files.extend(wallpaper_path.glob(f"*{ext}"))
+                    
+                    if media_files:
+                        media_file = media_files[0]
+                        success = controller.apply_media_wallpaper(str(media_file), monitor_name)
+                        if success:
+                            logger.info(f"Custom media wallpaper applied to {monitor_name}: {media_file.name}")
+                            return True
+                        else:
+                            logger.error(f"Failed to apply custom media to {monitor_name}: {media_file}")
+                            return False
+                    else:
+                        logger.error(f"No media files found in {wallpaper_path}")
+                        return False
+                else:
+                    logger.error(f"Custom wallpaper path not found: {wallpaper_path}")
+                    return False
+            else:
+                # For regular wallpapers, use WallpaperEngine with monitor parameter
+                success = self.wallpaper_engine.apply_wallpaper(
+                    wallpaper_id=wallpaper_id,
+                    screen=monitor_name,  # This should target specific monitor
+                    volume=50,  # default
+                    fps=60,     # default
+                    noautomute=False,
+                    no_audio_processing=False,
+                    disable_mouse=False
+                )
+                
+                if success:
+                    logger.info(f"Regular wallpaper applied to {monitor_name}: {wallpaper_id}")
+                else:
+                    logger.error(f"Failed to apply regular wallpaper to {monitor_name}: {wallpaper_id}")
+                
+                return success
             
         except Exception as e:
             logger.error(f"Error applying wallpaper ({monitor_name}, {wallpaper_id}): {e}")

@@ -16,11 +16,11 @@ class PlaylistManager:
     Wallpaper playlist'lerini yöneten sınıf.
     
     Attributes:
-        current_playlist: Aktif playlist
-        current_index: Şu anki wallpaper indeksi
-        is_playing: Playlist çalıyor mu
-        is_random: Rastgele çalma modu aktif mi
-        timer_interval: Wallpaper değiştirme aralığı (saniye)
+        current_playlist: Active playlist
+        current_index: Current wallpaper index
+        is_playing: Is playlist playing
+        is_random: Is random playback mode active
+        timer_interval: Wallpaper change interval (seconds)
         recent_wallpapers: Son kullanılan wallpaper'lar
         playlists: Kaydedilmiş playlist'ler
     """
@@ -45,7 +45,7 @@ class PlaylistManager:
             bool: Yükleme başarılı ise True
         """
         if not SETTINGS_FILE.exists():
-            logger.info("Ayar dosyası bulunamadı, varsayılan ayarlar kullanılıyor")
+            logger.info("Settings file not found, using default settings")
             return False
             
         try:
@@ -160,7 +160,7 @@ class PlaylistManager:
             bool: Silme başarılı ise True
         """
         if name not in self.playlists:
-            logger.warning(f"'{name}' playlist'i bulunamadı")
+            logger.warning(f"'{name}' playlist not found")
             return False
             
         del self.playlists[name]
@@ -179,7 +179,7 @@ class PlaylistManager:
             bool: Yükleme başarılı ise True
         """
         if name not in self.playlists:
-            logger.warning(f"'{name}' playlist'i bulunamadı")
+            logger.warning(f"'{name}' playlist not found")
             return False
             
         self.current_playlist = self.playlists[name].copy()
@@ -190,7 +190,7 @@ class PlaylistManager:
 
     def add_to_current_playlist(self, wallpaper_id: str) -> bool:
         """
-        Aktif playlist'e wallpaper ekler.
+        Adds wallpaper to active playlist.
         
         Args:
             wallpaper_id: Eklenecek wallpaper ID'si
@@ -203,7 +203,7 @@ class PlaylistManager:
             
         if wallpaper_id not in self.current_playlist:
             self.current_playlist.append(wallpaper_id)
-            logger.debug(f"'{wallpaper_id}' aktif playlist'e eklendi")
+            logger.debug(f"'{wallpaper_id}' added to active playlist")
             return True
         else:
             logger.debug(f"'{wallpaper_id}' zaten playlist'te mevcut")
@@ -211,7 +211,7 @@ class PlaylistManager:
 
     def remove_from_current_playlist(self, index: int) -> bool:
         """
-        Aktif playlist'ten wallpaper çıkarır.
+        Removes wallpaper from active playlist.
         
         Args:
             index: Çıkarılacak wallpaper'ın indeksi
@@ -228,26 +228,26 @@ class PlaylistManager:
             elif self.current_index >= len(self.current_playlist) and self.current_playlist:
                 self.current_index = 0
                 
-            logger.debug(f"'{removed}' aktif playlist'ten çıkarıldı")
+            logger.debug(f"'{removed}' removed from active playlist")
             return True
         else:
             logger.warning(f"Geçersiz indeks: {index}")
             return False
 
     def clear_current_playlist(self) -> None:
-        """Aktif playlist'i temizler."""
+        """Clears active playlist."""
         self.current_playlist.clear()
         self.current_index = 0
         self.is_playing = False
-        logger.info("Aktif playlist temizlendi")
+        logger.info("Active playlist cleared")
 
     def clear_current_wallpaper(self) -> None:
-        """Cached current wallpaper state'ini temizler - process verification sonrası."""
-        # Current index'i sıfırla ama playlist'i koruy
+        """Clears cached current wallpaper state - after process verification."""
+        # Reset current index but keep playlist
         self.current_index = 0
-        # is_playing'i de durdur çünkü process yok
+        # Also stop is_playing because process doesn't exist
         self.is_playing = False
-        logger.info("Cached current wallpaper state temizlendi (process verification failed)")
+        logger.info("Cached current wallpaper state cleared (process verification failed)")
 
     def get_current_wallpaper(self) -> Optional[str]:
         """
@@ -265,7 +265,7 @@ class PlaylistManager:
         Sonraki wallpaper ID'sini döner.
         
         Args:
-            random_mode: Rastgele seçim yapılsın mı
+            random_mode: Should random selection be used
             
         Returns:
             str: Wallpaper ID'si veya None
@@ -279,7 +279,7 @@ class PlaylistManager:
         else:
             self.current_index = (self.current_index + 1) % len(self.current_playlist)
         
-        self.save_settings()  # Index değişti, kaydet
+        self.save_settings()  # Index changed, save
         return self.get_current_wallpaper()
 
     def get_previous_wallpaper(self) -> Optional[str]:
@@ -293,7 +293,7 @@ class PlaylistManager:
             return None
             
         self.current_index = (self.current_index - 1) % len(self.current_playlist)
-        self.save_settings()  # Index değişti, kaydet
+        self.save_settings()  # Index changed, save
         return self.get_current_wallpaper()
 
     def get_playlist_info(self) -> Dict[str, Any]:
@@ -339,7 +339,7 @@ class PlaylistManager:
         return None, None
 
     def clear_custom_timer(self) -> None:
-        """Özel timer ayarını temizler."""
+        """Clears custom timer setting."""
         self.custom_timer_text = None
         self.save_settings()
-        logger.debug("Özel timer ayarı temizlendi")
+        logger.debug("Custom timer setting cleared")

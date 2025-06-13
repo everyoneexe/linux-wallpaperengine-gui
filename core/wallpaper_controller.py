@@ -25,10 +25,10 @@ class WallpaperController:
         
         # Preset'ler kaldırıldı - gereksiz
         
-        logger.info("WallpaperController başlatıldı")
+        logger.info("WallpaperController started")
     
     def is_wallpaper_running(self) -> bool:
-        """Wallpaper çalışıyor mu kontrol eder."""
+        """Checks if wallpaper is running."""
         return self.wallpaper_engine.current_wallpaper is not None
     
     def get_current_settings(self) -> Dict[str, Any]:
@@ -39,7 +39,7 @@ class WallpaperController:
     
     def set_volume(self, volume: int) -> bool:
         """
-        Wallpaper ses seviyesini değiştirir (sadece ayarları günceller, restart yok).
+        Changes wallpaper volume (only updates settings, no restart).
         
         Args:
             volume: Ses seviyesi (0-100)
@@ -48,7 +48,7 @@ class WallpaperController:
             bool: Başarılı ise True
         """
         if not self.is_wallpaper_running():
-            logger.warning("Wallpaper çalışmıyor, ses değiştirilemedi")
+            logger.warning("Wallpaper not running, volume could not be changed")
             return False
         
         volume = max(0, min(100, volume))
@@ -68,7 +68,7 @@ class WallpaperController:
             bool: Başarılı ise True
         """
         if not self.is_wallpaper_running():
-            logger.warning("Wallpaper çalışmıyor, sessiz toggle edilemedi")
+            logger.warning("Wallpaper not running, mute could not be toggled")
             return False
         
         current_volume = self.wallpaper_engine.last_settings.get("volume", 50)
@@ -86,7 +86,7 @@ class WallpaperController:
     
     def set_fps(self, fps: int) -> bool:
         """
-        Wallpaper FPS'ini değiştirir (sadece ayarları günceller, restart yok).
+        Changes wallpaper FPS (only updates settings, no restart).
         
         Args:
             fps: FPS değeri (10-144)
@@ -95,7 +95,7 @@ class WallpaperController:
             bool: Başarılı ise True
         """
         if not self.is_wallpaper_running():
-            logger.warning("Wallpaper çalışmıyor, FPS değiştirilemedi")
+            logger.warning("Wallpaper not running, FPS could not be changed")
             return False
         
         fps = max(10, min(144, fps))
@@ -115,7 +115,7 @@ class WallpaperController:
             bool: Başarılı ise True
         """
         if not self.is_wallpaper_running():
-            logger.warning("Wallpaper çalışmıyor, mouse toggle edilemedi")
+            logger.warning("Wallpaper not running, mouse could not be toggled")
             return False
         
         current_mouse = self.wallpaper_engine.last_settings.get("disable_mouse", False)
@@ -137,7 +137,7 @@ class WallpaperController:
             bool: Başarılı ise True
         """
         if not self.is_wallpaper_running():
-            logger.warning("Wallpaper çalışmıyor, audio processing toggle edilemedi")
+            logger.warning("Wallpaper not running, audio processing could not be toggled")
             return False
         
         current_proc = self.wallpaper_engine.last_settings.get("no_audio_processing", False)
@@ -159,7 +159,7 @@ class WallpaperController:
             bool: Başarılı ise True
         """
         if not self.is_wallpaper_running():
-            logger.warning("Wallpaper çalışmıyor, auto mute toggle edilemedi")
+            logger.warning("Wallpaper not running, auto mute could not be toggled")
             return False
         
         current_mute = self.wallpaper_engine.last_settings.get("noautomute", False)
@@ -211,10 +211,10 @@ class WallpaperController:
             
             media_file = Path(media_path)
             if not media_file.exists():
-                logger.error(f"Medya dosyası bulunamadı: {media_path}")
+                logger.error(f"Media file not found: {media_path}")
                 return False
             
-            # Önce mevcut wallpaper engine process'lerini durdur
+            # First stop existing wallpaper engine processes
             self._stop_existing_wallpaper_processes()
             
             # Platform ve desktop environment tespiti
@@ -239,27 +239,27 @@ class WallpaperController:
             return False
     
     def _stop_existing_wallpaper_processes(self) -> None:
-        """Mevcut wallpaper engine process'lerini durdurur."""
+        """Stops existing wallpaper engine processes."""
         try:
             import subprocess
             
-            # Linux wallpaper engine process'lerini durdur
+            # Stop Linux wallpaper engine processes
             try:
                 result = subprocess.run(['pkill', '-f', 'linux-wallpaperengine'],
                                       capture_output=True, timeout=5)
                 if result.returncode == 0:
-                    logger.info("Mevcut linux-wallpaperengine process'leri durduruldu")
+                    logger.info("Existing linux-wallpaperengine processes stopped")
             except:
                 pass
             
-            # Swww process'lerini durdur (GIF/video uygulanırken)
+            # Stop Swww processes (when applying GIF/video)
             try:
                 subprocess.run(['pkill', '-f', 'swww'], capture_output=True, timeout=5)
-                logger.info("Swww process'leri durduruldu (GIF/video uygulama için)")
+                logger.info("Swww processes stopped (for GIF/video application)")
             except:
                 pass
             
-            # Video wallpaper process'lerini durdur
+            # Stop video wallpaper processes
             self.stop_video_wallpaper("all")
             
             # Kısa bekleme
@@ -267,7 +267,7 @@ class WallpaperController:
             time.sleep(1)
             
         except Exception as e:
-            logger.error(f"Wallpaper process durdurma hatası: {e}")
+            logger.error(f"Wallpaper process stopping error: {e}")
     
     def _detect_desktop_environment(self) -> str:
         """Desktop environment'ı tespit eder."""
@@ -327,7 +327,7 @@ class WallpaperController:
                              capture_output=True, check=True, timeout=5)
             except (subprocess.CalledProcessError, FileNotFoundError):
                 # Daemon başlat dene
-                logger.info("Swww daemon başlatılıyor...")
+                logger.info("Starting swww daemon...")
                 try:
                     subprocess.Popen(['swww', 'init'],
                                    stdout=subprocess.DEVNULL,
@@ -335,7 +335,7 @@ class WallpaperController:
                     import time
                     time.sleep(2)
                 except FileNotFoundError:
-                    logger.warning("Swww bulunamadı, Sixel fallback deneniyor...")
+                    logger.warning("Swww not found, trying Sixel fallback...")
                     return self._apply_sixel_wallpaper(media_file, screen)
             
             # GIF/Resim wallpaper uygula
@@ -783,7 +783,7 @@ class WallpaperController:
         Video wallpaper process'lerini durdurur.
         
         Args:
-            screen: Durdurulacak ekran ("all" tüm ekranlar için)
+            screen: Screen to stop ("all" for all screens)
             
         Returns:
             bool: Başarılı ise True
@@ -815,7 +815,7 @@ class WallpaperController:
                 logger.info(f"{stopped_count} video wallpaper process'i durduruldu")
                 return True
             else:
-                logger.info("Durdurulacak video wallpaper process'i bulunamadı")
+                logger.info("No video wallpaper process found to stop")
                 return False
                 
         except Exception as e:
@@ -900,7 +900,7 @@ class WallpaperController:
         Ölü video process'lerini temizler.
         
         Returns:
-            int: Temizlenen process sayısı
+            int: Number of cleaned processes
         """
         try:
             cleaned_count = 0

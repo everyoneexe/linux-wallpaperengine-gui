@@ -51,12 +51,12 @@ class SteamWorkshopMonitor(QThread):
             logger.info("Steam Workshop monitoring started")
     
     def stop_monitoring(self) -> None:
-        """Monitoring'i durdur."""
+        """Stop monitoring."""
         if self.monitoring:
             self.monitoring = False
             self.quit()
-            self.wait(3000)  # 3 saniye bekle
-            logger.info("Steam Workshop monitoring durduruldu")
+            self.wait(3000)  # Wait 3 seconds
+            logger.info("Steam Workshop monitoring stopped")
     
     def run(self) -> None:
         """Main monitoring loop."""
@@ -86,7 +86,7 @@ class SteamWorkshopMonitor(QThread):
                 for workshop_id in new_folders:
                     # Make sure folder is completely created (check preview.jpg etc.)
                     if self._is_wallpaper_complete(workshop_id):
-                        logger.info(f"Yeni Steam wallpaper tespit edildi: {workshop_id}")
+                        logger.info(f"New Steam wallpaper detected: {workshop_id}")
                         self.new_wallpaper_detected.emit(workshop_id)
                         self.known_folders.add(workshop_id)
                     else:
@@ -152,12 +152,12 @@ class SteamWorkshopWatcher:
                 logger.error(f"Steam Workshop watcher could not be started: {e}")
     
     def stop(self) -> None:
-        """Monitoring'i durdur."""
+        """Stop monitoring."""
         if self.monitor:
             try:
                 self.monitor.stop_monitoring()
                 self.monitor = None
-                logger.info("Steam Workshop watcher durduruldu")
+                logger.info("Steam Workshop watcher stopped")
             except Exception as e:
                 logger.error(f"Steam Workshop watcher could not be stopped: {e}")
     

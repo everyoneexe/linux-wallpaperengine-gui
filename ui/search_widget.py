@@ -267,7 +267,7 @@ class SearchWidget(QWidget):
         filters_layout.addStretch()
         
         # Clear filters
-        clear_btn = QPushButton("Temizle")
+        clear_btn = QPushButton("Clear")
         clear_btn.setStyleSheet("""
             QPushButton {
                 background: #ff9800;
@@ -369,7 +369,7 @@ class SearchWidget(QWidget):
             self.tag_combo.addItem(tag, tag)
     
     def clear_filters(self):
-        """Filtreleri temizle"""
+        """Clear filters"""
         self.search_input.clear()
         self.type_combo.setCurrentIndex(0)
         self.tag_combo.setCurrentIndex(0)

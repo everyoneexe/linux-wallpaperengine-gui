@@ -586,6 +586,7 @@ class MainWindow(QWidget):
         self.load_wallpapers()
         self._load_current_playlist()
         
+        
         # Load saved custom timer settings
         self._load_custom_timer_settings()
         
@@ -673,7 +674,6 @@ class MainWindow(QWidget):
         tab_layout.addWidget(scroll_area)
 
         return tab_widget
-
 
     def create_steam_browser_tab(self) -> QWidget:
         """Creates Steam Workshop browser tab - Minimal QWebEngine."""
@@ -827,13 +827,15 @@ class MainWindow(QWidget):
         toolbar_layout.setContentsMargins(10, 10, 10, 10)
         toolbar_layout.setSpacing(15)
 
-        # Screen selection (compact)
+        # Screen selection
         screen_label = QLabel("SCREEN")
         screen_label.setObjectName("CompactLabel")
         self.screen_combo = QComboBox()
+        self.screen_combo.setObjectName("ScreenCombo")
         self.screen_combo.addItems(self.screens)
+        self.screen_combo.setCurrentText(self.selected_screen)
         self.screen_combo.currentTextChanged.connect(self._on_screen_change)
-        self.screen_combo.setMaximumWidth(120)
+        self.screen_combo.setMaximumWidth(150)
 
         # Volume control (compact)
         vol_label = QLabel("VOLUME")
@@ -1471,6 +1473,43 @@ class MainWindow(QWidget):
                     selection-background-color: rgba({self._hex_to_rgba(primary_color)}, 0.3);
                 }}
                 
+                QComboBox#ScreenCombo {{
+                    background: rgba({self._hex_to_rgba(primary_color)}, 0.15);
+                    color: {primary_color};
+                    border: 1px solid rgba({self._hex_to_rgba(primary_color)}, 0.4);
+                    border-radius: 6px;
+                    padding: 4px 8px;
+                    font-weight: bold;
+                    font-size: 10px;
+                    margin: 2px;
+                }}
+                
+                QComboBox#ScreenCombo:hover {{
+                    background: rgba({self._hex_to_rgba(primary_color)}, 0.25);
+                    border-color: rgba({self._hex_to_rgba(primary_color)}, 0.6);
+                }}
+                
+                QComboBox#ScreenCombo::drop-down {{
+                    border: none;
+                    width: 20px;
+                }}
+                
+                QComboBox#ScreenCombo::down-arrow {{
+                    image: none;
+                    border-left: 4px solid transparent;
+                    border-right: 4px solid transparent;
+                    border-top: 6px solid {primary_color};
+                    margin-right: 4px;
+                }}
+                
+                QComboBox#ScreenCombo QAbstractItemView {{
+                    background: rgba(30, 30, 30, 0.95);
+                    color: {primary_color};
+                    border: 1px solid rgba({self._hex_to_rgba(primary_color)}, 0.6);
+                    border-radius: 4px;
+                    selection-background-color: rgba({self._hex_to_rgba(primary_color)}, 0.3);
+                }}
+                
                 QCheckBox {{
                     font-size: 16px;
                     spacing: 5px;
@@ -1723,10 +1762,10 @@ class MainWindow(QWidget):
         except Exception as e:
             logger.error(f"Error loading wallpapers: {e}")
 
-    def _on_screen_change(self, screen_name: str) -> None:
-        """Called when screen changes."""
-        self.selected_screen = screen_name
-        logger.debug(f"Screen changed: {screen_name}")
+    def _on_screen_change(self, screen: str) -> None:
+        """Called when screen selection changes."""
+        self.selected_screen = screen
+        logger.debug(f"Screen changed: {screen}")
 
     def _on_volume_changed(self, volume: int) -> None:
         """Called when volume level changes - dynamic control."""
@@ -1769,11 +1808,11 @@ class MainWindow(QWidget):
             return
 
         if self.playlist_manager.is_playing:
-            # Durdur
+            # Stop
             self.playlist_timer.stop()
             self.playlist_manager.is_playing = False
             self.playlist_widget.set_playing_state(False)
-            self.show_toast("⏸️ Playlist durduruldu", 2000)
+            self.show_toast("⏸️ Playlist paused", 2000)
         else:
             # Başlat - mod ayarını kontrol et
             is_random = self.playlist_widget.is_random_mode()
@@ -1781,11 +1820,11 @@ class MainWindow(QWidget):
             
             # İlk wallpaper'ı seç ve uygula
             if is_random:
-                wallpaper_id = self.playlist_manager.get_next_wallpaper(True)  # Rastgele
-                mode_text = "rastgele"
+                wallpaper_id = self.playlist_manager.get_next_wallpaper(True)  # Random
+                mode_text = "random"
             else:
-                wallpaper_id = self.playlist_manager.get_next_wallpaper(False)  # Sıralı
-                mode_text = "sıralı"
+                wallpaper_id = self.playlist_manager.get_next_wallpaper(False)  # Sequential
+                mode_text = "sequential"
             
             if wallpaper_id:
                 self.apply_wallpaper(wallpaper_id)
@@ -1850,7 +1889,7 @@ class MainWindow(QWidget):
         # PlaylistManager'ı da temizle ve kaydet
         self.playlist_manager.clear_current_playlist()
         self._save_current_playlist()
-        self.show_toast("🗑️ Playlist temizlendi", 2000)
+        self.show_toast("🗑️ Playlist cleared", 2000)
 
     def _on_timer_interval_changed(self, interval: int) -> None:
         """Timer aralığı değiştiğinde çağrılır."""
@@ -1870,7 +1909,7 @@ class MainWindow(QWidget):
             logger.info(f"Timer yeniden başlatıldı: {interval} saniye ({interval/60:.1f} dakika)")
 
     def _on_play_mode_changed(self, is_random: bool) -> None:
-        """Çalma modu değiştiğinde çağrılır."""
+        """Called when playback mode changes."""
         self.playlist_manager.is_random = is_random
         self.playlist_manager.save_settings()
 
@@ -2089,7 +2128,7 @@ class MainWindow(QWidget):
                 if not success:
                     # Başarısızsa checkbox'ı eski haline döndür
                     self.noautomute_cb.setChecked(not checked)
-                    self.show_toast("❌ Otomatik ses kısma değiştirilemedi!", 2000)
+                    self.show_toast("❌ Auto mute could not be changed!", 2000)
             
         except Exception as e:
             logger.error(f"Auto mute toggle hatası: {e}")
@@ -2103,7 +2142,7 @@ class MainWindow(QWidget):
                 if not success:
                     # Başarısızsa checkbox'ı eski haline döndür
                     self.noaudioproc_cb.setChecked(not checked)
-                    self.show_toast("❌ Ses işleme değiştirilemedi!", 2000)
+                    self.show_toast("❌ Audio processing could not be changed!", 2000)
             
         except Exception as e:
             logger.error(f"Audio processing toggle hatası: {e}")
@@ -2117,7 +2156,7 @@ class MainWindow(QWidget):
                 if not success:
                     # Başarısızsa checkbox'ı eski haline döndür
                     self.disable_mouse_cb.setChecked(not checked)
-                    self.show_toast("❌ Fare etkileşimi değiştirilemedi!", 2000)
+                    self.show_toast("❌ Mouse interaction could not be changed!", 2000)
             
         except Exception as e:
             logger.error(f"Mouse toggle hatası: {e}")
@@ -2137,7 +2176,7 @@ class MainWindow(QWidget):
                 status = "açıldı" if is_silent else "kapatıldı"
                 self.show_toast(f"🔇 Sessiz mod {status} (tray)", 2000)
             else:
-                self.show_toast("❌ Sessiz mod değiştirilemedi!", 2000)
+                self.show_toast("❌ Mute mode could not be changed!", 2000)
                 
         except Exception as e:
             logger.error(f"Tray silent toggle hatası: {e}")
@@ -2155,9 +2194,9 @@ class MainWindow(QWidget):
             # FFmpeg durumu kontrol et
             ffmpeg_available = is_ffmpeg_available()
             if ffmpeg_available:
-                logger.info("✅ FFmpeg mevcut - gelişmiş medya işleme aktif")
+                logger.info("✅ FFmpeg available - advanced media processing active")
             else:
-                logger.warning("⚠️ FFmpeg bulunamadı - temel işleme modu")
+                logger.warning("⚠️ FFmpeg not found - basic processing mode")
             
             # Medya dosyası seçme dialogu - FFmpeg varsa daha geniş format desteği
             file_dialog = QFileDialog(self)
@@ -2337,11 +2376,11 @@ class MainWindow(QWidget):
             # Thread'i başlat
             self.media_thread.start()
             
-            logger.info(f"Background medya işleme başlatıldı: {media_path.name}")
+            logger.info(f"Background media processing started: {media_path.name}")
             
         except Exception as e:
             logger.error(f"Background medya işleme başlatma hatası: {e}")
-            self.show_toast(f"❌ İşleme başlatma hatası: {e}", 4000)
+            self.show_toast(f"❌ Processing start error: {e}", 4000)
     
     def _on_media_processing_progress(self, message: str) -> None:
         """Medya işleme ilerlemesi."""
@@ -2749,7 +2788,7 @@ class MainWindow(QWidget):
                 steam_workshop_path = Path.home() / ".local" / "share" / "Steam" / "steamapps" / "workshop" / "content" / "431960"
                 
             if not steam_workshop_path.exists():
-                self.show_toast("❌ Steam Workshop klasörü bulunamadı!", 4000)
+                self.show_toast("❌ Steam Workshop folder not found!", 4000)
                 logger.error(f"Steam Workshop klasörü bulunamadı: {steam_workshop_path}")
                 return None
             
@@ -2904,7 +2943,7 @@ class MainWindow(QWidget):
                 steam_workshop_path = Path.home() / ".local" / "share" / "Steam" / "steamapps" / "workshop" / "content" / "431960"
                 
             if not steam_workshop_path.exists():
-                self.show_toast("❌ Steam Workshop klasörü bulunamadı!", 4000)
+                self.show_toast("❌ Steam Workshop folder not found!", 4000)
                 logger.error(f"Steam Workshop klasörü bulunamadı: {steam_workshop_path}")
                 return None
             
@@ -3136,7 +3175,7 @@ class MainWindow(QWidget):
 
     def apply_wallpaper(self, wallpaper_id: str) -> bool:
         """
-        Wallpaper uygular - özel medyalar için swww kullanır.
+        Wallpaper uygular - multi-monitor desteği ile.
         
         Args:
             wallpaper_id: Uygulanacak wallpaper ID'si
@@ -3145,7 +3184,6 @@ class MainWindow(QWidget):
             bool: True if application successful
         """
         try:
-            # Özel medya mı kontrol et
             if wallpaper_id.startswith('custom_') or wallpaper_id.startswith('gif_'):
                 success = self._apply_custom_media_wallpaper(wallpaper_id)
             else:
@@ -3765,7 +3803,7 @@ class MainWindow(QWidget):
                         logger.info(f"Playlist'ten current wallpaper restore ediliyor: {current_in_playlist}")
                         self.playlist_widget.set_current_wallpaper(current_in_playlist)
                 else:
-                    logger.info("Playlist durdurulmuş durumdaydı")
+                    logger.info("Playlist was in stopped state")
                     self.playlist_widget.set_playing_state(False)
             else:
                 logger.info("Restore edilecek playlist yok")
@@ -3824,13 +3862,13 @@ class MainWindow(QWidget):
                     
                 elif self.playlist_manager.is_playing and not wallpaper_in_playlist:
                     # ❌ PLAYLIST AKTIF AMA WALLPAPER PLAYLIST DIŞI - playlist'i durdur
-                    print(f"[DEBUG] ⚠️ CONFLICT: Playlist aktifti ama wallpaper playlist dışında - durdur")
+                    print(f"[DEBUG] ⚠️ CONFLICT: Playlist was active but wallpaper is outside playlist - stop")
                     self.playlist_manager.is_playing = False
                     self.playlist_widget.set_playing_state(False)
                     self.playlist_timer.stop()
                     self.playlist_manager.save_settings()
                     
-                    toast_msg = f"🎯 Manuel wallpaper (playlist durduruldu): {self.playlist_widget.get_wallpaper_name(current_wallpaper)}"
+                    toast_msg = f"🎯 Manual wallpaper (playlist stopped): {self.playlist_widget.get_wallpaper_name(current_wallpaper)}"
                     logger.info(f"Playlist conflict - stopped because wallpaper not in playlist")
                     
                 else:
@@ -3891,9 +3929,9 @@ class MainWindow(QWidget):
                 print(f"[DEBUG] ✅ Toast: {toast_msg}")
                 
             else:
-                logger.info("❌ Çalışan wallpaper bulunamadı")
-                print(f"[DEBUG] ❌ Çalışan wallpaper bulunamadı")
-                self.show_toast("🔄 App başlatıldı - aktif wallpaper yok", 2000)
+                logger.info("❌ No running wallpaper found")
+                print(f"[DEBUG] ❌ No running wallpaper found")
+                self.show_toast("🔄 App started - no active wallpaper", 2000)
             
             logger.info("=== APP STATE RESTORE TAMAMLANDI ===")
             

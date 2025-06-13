@@ -14,6 +14,9 @@ def find_wallpaper_engine_binary():
     """
     # Common installation paths
     search_paths = [
+        # Current workspace binary (highest priority)
+        Path("/home/everyone/Downloads/linux-wallpaperengine/build/output/linux-wallpaperengine"),
+        
         # User's Downloads (common build location)
         Path.home() / "Downloads/linux-wallpaperengine/build/output/linux-wallpaperengine",
         Path.home() / "Downloads/linux-wallpaperengine/build/linux-wallpaperengine",
