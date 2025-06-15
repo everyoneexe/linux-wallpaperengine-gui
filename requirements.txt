@@ -1,0 +1,23 @@
+# Wallpaper Engine - Python Bağımlılıkları
+
+# Qt6 GUI Framework
+PySide6>=6.5.0
+
+# Qt6 WebEngine (Steam Workshop browser için)
+PySide6-Addons>=6.5.0
+
+# Opsiyonel: Gelişmiş logging için
+# colorlog>=6.7.0
+
+# Sistem bilgileri için (performans monitörü)
+psutil>=5.9.0
+
+# Web scraping için (Steam Workshop)
+requests>=2.28.0
+beautifulsoup4>=4.11.0
+
+# Opsiyonel: JSON şema doğrulama için
+# jsonschema>=4.17.0
+
+# Opsiyonel: Daha iyi hata raporlama için
+# sentry-sdk>=1.32.0

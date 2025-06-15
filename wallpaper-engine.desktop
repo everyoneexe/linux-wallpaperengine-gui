@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Wallpaper Engine Enhanced
+Comment=Linux Wallpaper Engine Enhanced - Steam Workshop wallpapers for Linux
+Exec=python3 /home/everyone/Desktop/wallpaper_engine/run.py
+Icon=/home/everyone/Desktop/wallpaper_engine/resources/icons/iccon.png
+Terminal=false
+Categories=Graphics;Utility;
+StartupNotify=true
+Keywords=wallpaper;background;steam;workshop;
