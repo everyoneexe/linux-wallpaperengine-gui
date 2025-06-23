@@ -4,12 +4,6 @@ GUI for the [Almamu/linux-wallpaperengine](https://github.com/Almamu/linux-wallp
 
 A powerful wallpaper management application for Linux with Steam Workshop support, video wallpapers, and advanced features.
 
-## 🚀 Quick Install
-
-```bash
-./install.sh
-```
-
 ## ✨ Features
 
 - 🖼️ **Steam Workshop wallpapers** - Full compatibility
