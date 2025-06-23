@@ -1,0 +1,76 @@
+Sixel kontrolü başarısız: name 'os' is not defined
+QWebEngine kullanılamıyor: libQt6WebEngineWidgets.so.6: cannot open shared object file: No such file or directory
+2025-06-24 00:59:14,746 - main - INFO - Linux Wallpaper Engine Enhanced v2.0 başlatılıyor...
+2025-06-24 00:59:14,754 - core.playlist_manager - INFO - Ayarlar başarıyla yüklendi
+[DEBUG] WallpaperEngine._load_state() çağrıldı
+[DEBUG] Settings dosyası: /home/everyone/.config/wallpaper_engine/settings.json
+[DEBUG] Dosya var mı? True
+[DEBUG] Settings data keys: ['playlists', 'recent', 'timer_interval', 'custom_timer_text', 'is_random', 'current_playlist', 'current_index', 'is_playing']
+[DEBUG] Wallpaper state: {}
+[DEBUG] Restore edilen current_wallpaper: None
+[DEBUG] Restore edilen last_settings: {}
+[DEBUG] ❌ Current wallpaper restore edilemedi
+[DEBUG] _detect_running_wallpaper() başladı
+[DEBUG] ❌ Çalışan wallpaper bulunamadı
+2025-06-24 00:59:14,772 - core.wallpaper_controller - INFO - WallpaperController başlatıldı
+2025-06-24 00:59:14,775 - utils.system_utils - INFO - Bulunan ekranlar: ['eDP-1']
+2025-06-24 00:59:14,797 - ui.main_window - INFO - Wallpaper process bulundu: PID 1298824 (1 adet) - [(1298824, 'sh', '/usr/bin/bash')]
+2025-06-24 00:59:14,797 - ui.main_window - INFO - Kaydedilmiş tema yüklendi: default
+2025-06-24 00:59:14,847 - ui.main_window - ERROR - Sistem tepsisi kurulurken hata: 'PySide6.QtWidgets.QCommonStyle' object has no attribute 'SP_ComputerIcon'
+2025-06-24 00:59:14,849 - utils.system_utils - INFO - 57 wallpaper önizlemesi bulundu (güçlü duplicate önleme)
+2025-06-24 00:59:14,849 - utils.system_utils - INFO - Final: 57 benzersiz wallpaper
+Taranıyor: /home/everyone/.steam/steam/steamapps/workshop/content/431960
+Toplam 57 wallpaper metadata'sı yüklendi
+2025-06-24 00:59:15,099 - ui.main_window - INFO - 57 wallpaper FlowLayout'ta yüklendi (güvenli duplicate önleme)
+2025-06-24 00:59:15,123 - main - INFO - Uygulama başarıyla başlatıldı
+2025-06-24 00:59:15,133 - main - INFO - Ana pencere gösterildi
+[DEBUG] ========== APP STATE RESTORE BAŞLADI ==========
+2025-06-24 00:59:15,623 - ui.main_window - INFO - === APP STATE RESTORE BAŞLADI ===
+[DEBUG] PlaylistManager current_playlist: 0 wallpaper
+[DEBUG] PlaylistManager is_playing: False
+[DEBUG] PlaylistManager current_index: 0
+[DEBUG] WallpaperEngine current_wallpaper: None
+2025-06-24 00:59:15,624 - ui.main_window - INFO - PlaylistManager current_playlist: 0 wallpaper
+2025-06-24 00:59:15,624 - ui.main_window - INFO - PlaylistManager is_playing: False
+2025-06-24 00:59:15,624 - ui.main_window - INFO - PlaylistManager current_index: 0
+2025-06-24 00:59:15,624 - ui.main_window - INFO - WallpaperEngine current_wallpaper: None
+2025-06-24 00:59:15,624 - ui.main_window - INFO - Restore edilecek playlist yok
+[DEBUG] 🔍 ========== WALLPAPER TESPİT BAŞLADI ==========
+2025-06-24 00:59:15,624 - ui.main_window - INFO - 🔍 Aktif wallpaper tespiti başlatıldı
+[DEBUG] 1️⃣ WallpaperEngine.current_wallpaper: 'None'
+[DEBUG] 🔍 linux-wallpaperengine cmdline: /bin/sh -c cd linux-wallpaperengine-gui && python3 run.py 2>&1 | tee debug_output.log
+[DEBUG] ❌ linux-wallpaperengine process'i bulunamadı
+[DEBUG] 2️⃣ Process'ten tespit: 'None'
+[DEBUG] ❌ Video wallpaper process'i bulunamadı
+[DEBUG] 3️⃣ Video process'ten tespit: 'None'
+[DEBUG] 🔍 swww query output: eDP-1: 1920x1080, scale: 1, currently displaying: image: /home/everyone/Pictures/Wallpapers/mountain.jpg
+[DEBUG] ❌ swww output'tan wallpaper ID çıkarılamadı
+[DEBUG] 4️⃣ swww'den tespit: 'None'
+[DEBUG] 5️⃣ PlaylistManager'dan: 'None'
+2025-06-24 00:59:15,651 - ui.main_window - WARNING - ❌ Hiçbir aktif wallpaper process'i bulunamadı
+[DEBUG] ❌ Hiçbir aktif wallpaper process'i bulunamadı
+[DEBUG] Final current_wallpaper after enhanced detection: None
+2025-06-24 00:59:15,652 - ui.main_window - INFO - ❌ Çalışan wallpaper bulunamadı
+[DEBUG] ❌ Çalışan wallpaper bulunamadı
+2025-06-24 00:59:15,652 - ui.main_window - INFO - === APP STATE RESTORE TAMAMLANDI ===
+Taranıyor: /home/everyone/.steam/steam/steamapps/workshop/content/431960
+Toplam 57 wallpaper metadata'sı yüklendi
+2025-06-24 00:59:34,645 - utils.system_utils - INFO - Mevcut wallpaper süreçleri sonlandırıldı
+2025-06-24 00:59:34,645 - core.wallpaper_engine - INFO - Wallpaper uygulanıyor: 3191719833
+2025-06-24 00:59:34,649 - core.wallpaper_engine - INFO - Wallpaper bağımsız süreç olarak başlatıldı (PID: 1299838)
+2025-06-24 00:59:34,649 - core.wallpaper_engine - INFO - Wallpaper başarıyla uygulandı: 3191719833
+2025-06-24 00:59:34,650 - core.playlist_manager - INFO - Ayarlar başarıyla kaydedildi
+2025-06-24 00:59:46,519 - utils.system_utils - INFO - Mevcut wallpaper süreçleri sonlandırıldı
+2025-06-24 00:59:46,519 - core.wallpaper_engine - INFO - Wallpaper uygulanıyor: 3118949804
+2025-06-24 00:59:46,525 - core.wallpaper_engine - INFO - Wallpaper bağımsız süreç olarak başlatıldı (PID: 1300487)
+2025-06-24 00:59:46,525 - core.wallpaper_engine - INFO - Wallpaper başarıyla uygulandı: 3118949804
+2025-06-24 00:59:46,527 - core.playlist_manager - INFO - Ayarlar başarıyla kaydedildi
+2025-06-24 00:59:47,835 - utils.system_utils - INFO - Mevcut wallpaper süreçleri sonlandırıldı
+2025-06-24 00:59:47,835 - core.wallpaper_engine - INFO - Wallpaper uygulanıyor: 3191719833
+2025-06-24 00:59:47,848 - core.wallpaper_engine - INFO - Wallpaper bağımsız süreç olarak başlatıldı (PID: 1300623)
+2025-06-24 00:59:47,848 - core.wallpaper_engine - INFO - Wallpaper başarıyla uygulandı: 3191719833
+2025-06-24 00:59:47,850 - core.playlist_manager - INFO - Ayarlar başarıyla kaydedildi
+2025-06-24 01:00:11,075 - ui.main_window - INFO - linux-wallpaperengine durduruldu
+2025-06-24 01:00:11,099 - core.wallpaper_controller - INFO - Durdurulacak video wallpaper process'i bulunamadı
+2025-06-24 01:00:11,129 - ui.main_window - INFO - swww zaten çalışıyor ve wallpaper mevcut - korunuyor
+2025-06-24 01:00:11,129 - ui.main_window - INFO - Wallpaper process'leri durduruldu: linux-wallpaperengine (sistem wallpaper restore)
