@@ -12,15 +12,6 @@ A powerful wallpaper management application for Linux with Steam Workshop suppor
 - 🔧 **System tray** - Minimize to tray
 - 📁 **Custom imports** - Add your own wallpapers
 
-## 🎯 Usage
-
-```bash
-# Terminal
-wallpaper-engine
-
-# Or find "Wallpaper Engine" in your application menu
-```
-
 ## 📋 Requirements
 
 - Steam account with Wallpaper Engine
