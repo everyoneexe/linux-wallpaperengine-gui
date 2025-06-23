@@ -22,17 +22,17 @@ A powerful wallpaper management application for Linux with Steam Workshop suppor
 
 **Arch Linux:**
 ```bash
-sudo pacman -S python pyside6 python-pillow python-requests ffmpeg
+sudo pacman -S python pyside6 python-psutil qt6-webengine
 ```
 
 **Ubuntu/Debian:**
 ```bash
-sudo apt install python3 python3-pyside6.qtwidgets python3-pil python3-requests ffmpeg
+sudo apt install python3 python3-pyside6.qtwidgets python3-psutil qt6-webengine-dev
 ```
 
 **Fedora:**
 ```bash
-sudo dnf install python3 python3-pyside6 python3-pillow python3-requests ffmpeg
+sudo dnf install python3 python3-pyside6 python3-psutil python3-pyqt6-webengine
 ```
 
 Then run: `python3 main.py`
@@ -43,7 +43,7 @@ Then run: `python3 main.py`
 
 **Permission denied:** Don't run as root, use regular user
 
-**Import errors:** Try `pip3 install --user PySide6 Pillow requests`
+**Import errors:** Try `pip3 install --user PySide6 psutil`
 
 ---
 

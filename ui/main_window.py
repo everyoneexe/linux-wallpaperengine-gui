@@ -712,7 +712,7 @@ class MainWindow(QWidget):
         title_label.setStyleSheet("font-size: 18px; font-weight: bold; color: #ff6b6b; margin: 10px;")
         layout.addWidget(title_label)
         
-        info_label = QLabel("QWebEngine gerekli - AUR'dan python-pyside6-webengine yükleyin")
+        info_label = QLabel("QWebEngine gerekli - qt6-webengine paketini yükleyin: sudo pacman -S qt6-webengine")
         info_label.setAlignment(Qt.AlignCenter)
         info_label.setStyleSheet("color: #cccccc; font-size: 12px; line-height: 1.5;")
         info_label.setWordWrap(True)
